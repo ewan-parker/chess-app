@@ -4,19 +4,14 @@ public class Piece {
 
 	private PieceType type;
     private PieceColour colour;
-    private Position position;
+    
 
-    public Piece(PieceType type, PieceColour colour, Position pos) {
+    public Piece(PieceType type, PieceColour colour) {
 	    this.type = type;
 	    this.colour = colour;
-	    this.position = pos;
     }
     
-    public void setPosition(Position newPos) {
-    	this.position = newPos;
-    }
 
-    
     //Accessors:
 	public PieceType getType() {
     	return type;
@@ -25,14 +20,8 @@ public class Piece {
     public PieceColour getColour() {
     	return colour;
     }
-    
-    public Position getPosition() {
-    	return position;
-    }
 
-    
-    
-    
+ 
     @Override
     public String toString() {
 	    switch(type) {
