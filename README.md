@@ -12,7 +12,7 @@ Currently a console-based game
 
 - [See Patch Notes for version history](PATCHNOTES)
   
-- [A classic French Defense game, played in the console with ChessTester.java](ExampleOutput)
+- [A classic French Defense game, played in the console with ChessTester.java](ExampleOutputs/ExampleOutput-V1.0)
 
 ## Tech Stack
 - Language: Java
