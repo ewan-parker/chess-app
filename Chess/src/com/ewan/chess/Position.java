@@ -39,7 +39,6 @@ public class Position {
 			throw new IllegalArgumentException("Invalid input: must be like e4");
 		
 		
-		
 		char file = Character.toLowerCase(notationOfSquare.charAt(0)); // column letter
 		char rank = notationOfSquare.charAt(1); 
 		

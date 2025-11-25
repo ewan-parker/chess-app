@@ -15,30 +15,33 @@ public class ChessTester {
 		board.printBoard();
 		
 		while (true) {
+			System.out.print("\nPlayer: " + game.getCurrentTurn() + ". Make a Move (eg: g1 f3): ");
+    
+			String stringFrom = sc.next();
+			String stringTo = sc.next();
+    
 			
-			System.out.print("\nPlayer: " + game.getCurrentTurn() + ". Make a Move (eg: e3 e4): ");
+			Position from = Position.fromString(stringFrom);
+			Position to = Position.fromString(stringTo);
 			
-			String origin = sc.next();
-			String destination = sc.next();
-		
-			Position from = Position.fromString(origin);
-			Position to = Position.fromString(destination);;
-			
+    
 			System.out.println();
 			System.out.println("From row: " + from.getRow() + " col: " + from.getCol());
 			Piece piece = board.getPieceAt(from);
 			System.out.println("Piece at from: " + piece);
 			System.out.println();
-			
-			
-			
-			
-			 
-			game.makeMove(from, to);
-			
+    
+			boolean moveSuccess = game.makeMove(from, to);
+    
+			if (!moveSuccess) {
+				System.out.println("Move failed! Try again.");
+				continue;
+			}
+    
 			board.printBoard();
-			
 		}
+		
+		
 		
 		
 	}

@@ -1,5 +1,8 @@
 package com.ewan.chess;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class ChessGame {
 	
 	private ChessBoard board;
@@ -16,8 +19,6 @@ public class ChessGame {
 	
 	
 	private Position enPassantTarget; // square that can be captured with en-passant
-	
-	
 	
 	
 	
@@ -40,6 +41,8 @@ public class ChessGame {
 	
 	
 	public boolean makeMove(Position from, Position to) {
+		
+		
 		Piece piece = board.getPieceAt(from);
 		
 		if (piece == null) {
@@ -51,26 +54,166 @@ public class ChessGame {
 			System.out.println("Not your turn!");
 			return false;
 			}
-			
-		board.getLegalMoves(from);
 		
-		// handle special cases: castling, en-passant, promotion
+		boolean isWhite = piece.getColour() == PieceColour.WHITE;
 		
-		if (!board.getLegalMoves(from).contains(to)) {
+		
+		
 			
+		
+		//Check legal moves for that piece.
+		List<Position> legalMoves = board.getLegalMoves(from);
+		
+		if (piece.getType() == PieceType.KING)
+			legalMoves.addAll(getCastlingOptions(from));
+		
+		if (!legalMoves.contains(to)) {
 			System.out.printf("%nThats Not a legal move!%n%n");
 			return false;
-		}	
+		}
 		
 		
-		board.movePiece(from, to);
 		
-		 // handle castling access & en-passant
+		//Handle case: Castling:
+		
+		if (piece.getType() == PieceType.KING && Math.abs(from.getCol() - to.getCol()) == 2) {
+
+			//Move the king to its square
+			board.movePiece(from, to); 
+
+			//Update the kings access to castle.
+			if (isWhite) whiteKingMoved = true;
+			else blackKingMoved = true;
+			
+			
+			int row = (isWhite ? 7 : 0);
+			
+			
+			// King-Side Castling
+			if (to.getCol() == 6) {
+
+				board.movePiece(new Position(row, 7), new Position(row, 5)); //Castle king side rook
+				
+				if (isWhite) whiteRooksMoved[1] = true;
+				else blackRooksMoved[1] = true;
+				
+			} 
+			
+			// Queen-Side Castling
+			if (to.getCol() == 2) { 
+				
+				board.movePiece(new Position(row, 0), new Position(row, 3));
+				
+				if (isWhite) whiteRooksMoved[0] = true;
+				else blackRooksMoved[0] = true;
+			}	
+			
+		} else { 
+			//Normal Move 
+			board.movePiece(from, to);
+			
+			if (piece.getType() == PieceType.KING) {
+				if (isWhite) whiteKingMoved = true;
+				else blackKingMoved = true;
+			}
+			
+			if (piece.getType() == PieceType.ROOK) {
+						
+				if (isWhite) {
+					if (from.getCol() == 0) whiteRooksMoved[0] = true;
+					if (from.getCol() == 7) whiteRooksMoved[1] = true;
+				}
+				
+				if (!isWhite) {
+					if (from.getCol() == 0) blackRooksMoved[0] = true;
+					if (from.getCol() == 7) blackRooksMoved[1] = true;
+				}
+			}
+		}
+			
+
 		
 		currentTurn = toggleTurn(currentTurn);
 		
 		return true; //if move was successful.
 	}
+	
+	
+	private List<Position> getCastlingOptions(Position from) {
+		
+		
+		List<Position> castlingOptions = new ArrayList<>();
+		
+		Piece king = board.getPieceAt(from);
+		if (king == null || king.getType() != PieceType.KING) return castlingOptions;
+		
+		boolean isWhite = king.getColour() == PieceColour.WHITE;
+		
+		int row = isWhite ? 7 : 0;
+		
+		Piece leftRook = board.getPieceAt(new Position(row, 0));
+		Piece rightRook = board.getPieceAt(new Position(row, 7));
+		
+		Position b = new Position(row,1);
+		Position c = new Position(row,2);
+		Position d = new Position(row,3);
+		Position f = new Position(row,5);
+		Position g = new Position(row,6);
+		
+		
+		// King must be on starting square
+		if (isWhite && !(from.getRow() == 7 && from.getCol() == 4)) return castlingOptions;
+		if (!isWhite && !(from.getRow() == 0 && from.getCol() == 4)) return castlingOptions;
+		
+		 //King must not have moved
+		if (isWhite && whiteKingMoved) return castlingOptions;	
+		if (!isWhite && blackKingMoved) return castlingOptions;
+		
+		
+
+		
+		//White's Castles
+		
+		if ( isWhite && leftRook != null && !whiteRooksMoved[0] && board.isEmpty(b) && board.isEmpty(c) && board.isEmpty(d) ) { //Queen Side
+			
+			Position whiteQueenSideCastle = c;
+			
+			castlingOptions.add(whiteQueenSideCastle);
+		}
+			
+		if ( isWhite && rightRook != null && !whiteRooksMoved[1] && board.isEmpty(f) && board.isEmpty(g) ) { //King Side
+			
+			Position whiteKingSideCastle = g;
+			
+			castlingOptions.add(whiteKingSideCastle);
+		}
+		
+	
+		
+		//Black's Castles
+		
+		if ( !isWhite && leftRook != null && !blackRooksMoved[0] && board.isEmpty(b) && board.isEmpty(c) && board.isEmpty(d)) { //Queen Side
+			
+			Position blackQueenSideCastle = c;
+			
+			castlingOptions.add(blackQueenSideCastle);
+		
+		}
+		
+		if ( !isWhite && rightRook != null && !blackRooksMoved[1] && board.isEmpty(f) && board.isEmpty(g) ) { //King Side
+			
+			Position blackKingSideCastle = g;
+			
+			castlingOptions.add(blackKingSideCastle);
+		}
+		
+			
+			
+		
+		return castlingOptions;
+	}
+	
+	
 	
 	
 	
@@ -84,14 +227,14 @@ public class ChessGame {
 	public boolean isInCheck(PieceColour colour) {
 		
 		
-		return false;
+		return false; //TODO
 	}
 	
 	public boolean isCheckMate(PieceColour colour) {
 		
 		
 		
-		return false;
+		return false; //TODO
 	}
 	
 	
@@ -102,7 +245,7 @@ public class ChessGame {
 	}
 	
 	//Accessors: 
-	
+
 	public ChessBoard getBoard() { return board; }
     public PieceColour getCurrentTurn() { return currentTurn; }
     
