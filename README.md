@@ -7,18 +7,17 @@ A Java-based chess program
 - Track move history
 - Develop a frontend interface (React or JavaFX)
 
+## Progress
+Currently a console-based game 
+
+- [See Patch Notes for version history](PATCHNOTES)
+  
+- [A classic French Defense game, played in the console with ChessTester.java](ExampleOutput)
 
 ## Tech Stack
 - Language: Java
 - UI: To be added later
 
-
-## Status
-Currently runs in ChessTester with chessNotation console inputs. (Currently has no clause to end the game, king can be taken)
-
-[A classic french defense game, played in the console with ChessTester.java](ExampleOutput)
-
 ---
-More updates coming soon. 
 
-
+More updates coming soon.
