@@ -1,0 +1,125 @@
+Output for ChessTester.java
+
+r n b q k b n r 
+p p p p p p p p 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . . . . . . . 
+P P P P P P P P 
+R N B Q K B N R 
+
+Player: WHITE. Make a Move (eg: e3 e4): e2 e4
+
+From row: 6 col: 4
+Piece at from: P
+
+r n b q k b n r 
+p p p p p p p p 
+. . . . . . . . 
+. . . . . . . . 
+. . . . P . . . 
+. . . . . . . . 
+P P P P . P P P 
+R N B Q K B N R 
+
+Player: BLACK. Make a Move (eg: e3 e4): e7 e6
+
+From row: 1 col: 4
+Piece at from: p
+
+r n b q k b n r 
+p p p p . p p p 
+. . . . p . . . 
+. . . . . . . . 
+. . . . P . . . 
+. . . . . . . . 
+P P P P . P P P 
+R N B Q K B N R 
+
+Player: WHITE. Make a Move (eg: e3 e4): d2 d4
+
+From row: 6 col: 3
+Piece at from: P
+
+r n b q k b n r 
+p p p p . p p p 
+. . . . p . . . 
+. . . . . . . . 
+. . . P P . . . 
+. . . . . . . . 
+P P P . . P P P 
+R N B Q K B N R 
+
+Player: BLACK. Make a Move (eg: e3 e4): d7 d5
+
+From row: 1 col: 3
+Piece at from: p
+
+r n b q k b n r 
+p p p . . p p p 
+. . . . p . . . 
+. . . p . . . . 
+. . . P P . . . 
+. . . . . . . . 
+P P P . . P P P 
+R N B Q K B N R 
+
+Player: WHITE. Make a Move (eg: e3 e4): g8 f3
+
+From row: 0 col: 6
+Piece at from: n
+
+Not your turn!
+r n b q k b n r 
+p p p . . p p p 
+. . . . p . . . 
+. . . p . . . . 
+. . . P P . . . 
+. . . . . . . . 
+P P P . . P P P 
+R N B Q K B N R 
+
+Player: WHITE. Make a Move (eg: e3 e4): g1 f3
+
+From row: 7 col: 6
+Piece at from: N
+
+r n b q k b n r 
+p p p . . p p p 
+. . . . p . . . 
+. . . p . . . . 
+. . . P P . . . 
+. . . . . N . . 
+P P P . . P P P 
+R N B Q K B . R 
+
+Player: BLACK. Make a Move (eg: e3 e4): c7 c5
+
+From row: 1 col: 2
+Piece at from: p
+
+r n b q k b n r 
+p p . . . p p p 
+. . . . p . . . 
+. . p p . . . . 
+. . . P P . . . 
+. . . . . N . . 
+P P P . . P P P 
+R N B Q K B . R 
+
+Player: WHITE. Make a Move (eg: e3 e4): f1 b5
+
+From row: 7 col: 5
+Piece at from: B
+
+r n b q k b n r 
+p p . . . p p p 
+. . . . p . . . 
+. B p p . . . . 
+. . . P P . . . 
+. . . . . N . . 
+P P P . . P P P 
+R N B Q K . . R 
+
+Player: BLACK. Make a Move (eg: e3 e4):
