@@ -18,5 +18,12 @@ A Java-based chess program
 This is an early version. The structure, files, and design will evolve over time.
 
 
+## Status
+Currently runs in ChessTester with chessNotation console inputs. (Currently has no clause to end the game, king can be taken)
+
+[A classic french defense game, played in the console with ChessTester.java](ExampleOutput)
+
 ---
-More updates coming soon.
+More updates coming soon. 
+
+
