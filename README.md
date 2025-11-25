@@ -10,7 +10,7 @@ A Java-based chess program
 ## Progress
 Currently a console-based game 
 
-- [See Patch Notes for version history](PATCHNOTES)
+- [See Patch Notes for version history](PATCHNOTES.md)
   
 - [A classic French Defense game, played in the console with ChessTester.java](ExampleOutputs/ExampleOutput-V1.0)
 
