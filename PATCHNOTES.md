@@ -20,7 +20,6 @@
 - **Castling rules enforced:**  
   - No pieces between the king and the chosen rook  
   - Neither the king nor the castling rook has moved yet  
-- ⚠️ **Limitations:**  
-  - Castling does not yet check if the king is in check, passes through a square under attack, or would end in check.
+>⚠️ **Limitations:**  Castling does not yet check if the king is in check, passes through a square under attack, or would end in check.
  
 [`Version 1.1 Sample Output`](ExampleOutputs/ExampleOutput-V1.1) 
