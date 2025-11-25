@@ -1,5 +1,4 @@
-# Chess App
-
+# Chess App ♟
 A Java-based chess program
 
 ## Goals
@@ -12,10 +11,6 @@ A Java-based chess program
 ## Tech Stack
 - Language: Java
 - UI: To be added later
-
-
-## Notes
-This is an early version. The structure, files, and design will evolve over time.
 
 
 ## Status
