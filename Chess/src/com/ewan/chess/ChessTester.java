@@ -16,6 +16,13 @@ public class ChessTester {
 		
 		while (true) {
 			
+			if (game.isCheckMate(game.getCurrentTurn()))
+				break;
+			
+			if (game.isStaleMate(game.getCurrentTurn()))
+				break;
+			
+			
 			if (game.isInCheck(game.getCurrentTurn())) {
 				System.out.println(" ");
 				System.out.println("Check!");
@@ -46,6 +53,8 @@ public class ChessTester {
 			}
     
 			board.printBoard();
+			
+			
 		}	
 	}
 

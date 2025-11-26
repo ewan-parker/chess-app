@@ -291,16 +291,69 @@ public class ChessGame {
 	
 	public boolean isCheckMate(PieceColour colour) {
 		
+		PieceColour opponentColour = (colour == PieceColour.WHITE) ? PieceColour.BLACK : PieceColour.WHITE;
 		
+		board = getBoard();
 		
-		return false; //TODO
+		Position kingPos = board.findKing(colour);
+		
+		if (!board.squareAttacked(kingPos, opponentColour))
+			return false;
+
+		
+		for (int i = 0; i < 8; i++) {
+			for (int k = 0; k < 8; k++) {
+				
+				Position from = new Position(i,k);
+				
+				if (board.getPieceAt(from) == null || board.getPieceAt(from).getColour() != colour) 
+					continue;
+				
+				List<Position> legal = board.getLegalMoves(from);
+				
+				if(!legal.isEmpty()) {
+					return false;
+				}
+					
+			}
+		}
+		
+		System.out.println("\nPlayer " + colour + " is in checkmate...");
+		
+		return true;
 	}
 	
 	
-	public boolean isStalemate(PieceColour colour) {
+	public boolean isStaleMate(PieceColour colour) {
 		
+		PieceColour opponentColour = (colour == PieceColour.WHITE) ? PieceColour.BLACK : PieceColour.WHITE;
 		
-		return false;
+		board = getBoard();
+		
+		Position kingPos = board.findKing(colour);
+		
+		if (board.squareAttacked(kingPos, opponentColour))
+			return false;
+
+		
+		for (int i = 0; i < 8; i++) {
+			for (int k = 0; k < 8; k++) {
+				
+				Position from = new Position(i,k);
+				
+				if (board.getPieceAt(from) == null || board.getPieceAt(from).getColour() != colour) 
+					continue;
+				
+				List<Position> legal = board.getLegalMoves(from);
+				
+				if(!legal.isEmpty()) {
+					return false;
+				}	
+			}
+		}
+		System.out.println("\nPlayer " + colour + " is in stalemate...");
+		
+		return true;
 	}
 	
 	//Accessors: 
