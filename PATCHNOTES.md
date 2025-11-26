@@ -15,21 +15,26 @@
 
 [`Version 1.0 Sample Output`](ExampleOutputs/ExampleOutput-V1.0) 
 
+---
+
 ## Version 1.1 - `November 25, AM`
+
 ### Added **Castling**! `Move the king 2 squares towards the rook to castle.`
 - **Castling rules enforced:**  
   - No pieces between the king and the chosen rook  
   - Neither the king nor the castling rook has moved yet
 
 **Limitations:**  Castling does not yet check if the king is in check, passes through a square under attack, or would end in check.
- 
+
 [`Version 1.1 Sample Output`](ExampleOutputs/ExampleOutput-V1.1) 
+
+---
 
 ## Version 1.2 - `November 25, PM`
 
 ### **Updated Castling:** 
 - is now near-rigourous, you now cannot castle while a piece is attacking the kings path. only remaining castling issue belongs to check
-  
+
 ### Added **Check:**
 - `Check!` will be printed to the board if your king is in check.
 - Program detects if king is under attack
@@ -41,7 +46,9 @@
 
 [`Version 1.2 Sample Output`](ExampleOutputs/ExampleOutput-V1.2) 
 
-## Version 1.3 - `November 26`
+---
+
+## Version 1.3 - `November 26, AM`
 
 ### **Completed Check and Castling:**
 - King can no longer **castle out of check** or through attacked squares.  
@@ -54,7 +61,15 @@
 
 [`Version 1.3 Sample Output`](ExampleOutputs/ExampleOutput-V1.3)  
 
+---
 
+## Version 1.4 - `November 26, PM`
 
+### Added **Checkmate and Stalemate**
+- The game now ends when either player cannot make a move.
+- The type of ending is printed to the console with a message explaining the games ending.
 
+[`Version 1.4 Sample Output`](ExampleOutputs/ExampleOutput-V1.4)
+
+---
 
