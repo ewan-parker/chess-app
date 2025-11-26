@@ -15,7 +15,7 @@
 
 [`Version 1.0 Sample Output`](ExampleOutputs/ExampleOutput-V1.0) 
 
-## Version 1.1 - `November 25`
+## Version 1.1 - `November 25, AM`
 ### Added **Castling**! `Move the king 2 squares towards the rook to castle.`
 - **Castling rules enforced:**  
   - No pieces between the king and the chosen rook  
@@ -25,7 +25,7 @@
  
 [`Version 1.1 Sample Output`](ExampleOutputs/ExampleOutput-V1.1) 
 
-## Version 1.2 - `November 26`
+## Version 1.2 - `November 25, PM`
 
 ### **Updated Castling:** 
 - is now near-rigourous, you now cannot castle while a piece is attacking the kings path. only remaining castling issue belongs to check
@@ -35,11 +35,25 @@
 - Program detects if king is under attack
 - **King Movement:** The king now may not move to a square which it will be in check.
 
-**Limitations:**
-- moves may reveal the king to attacking pieces.
-- players may move, including castle, while in check.
+⚠️**Limitations:**
+  - moves may reveal the king to attacking pieces.
+  - players may move, including castle, while in check.
 
 [`Version 1.2 Sample Output`](ExampleOutputs/ExampleOutput-V1.2) 
+
+## Version 1.3 - `November 26`
+
+### **Completed Check and Castling:**
+- King can no longer **castle out of check** or through attacked squares.  
+- Castling logic now correctly considers **all squares the king traverses**.
+- You can no longer make a move that leaves you in check, or ignore being in check and move another piece
+
+⚠️**Limitations:**
+  - Checkmate and stalemate detection still not implemented.  
+  - En-passant and pawn promotion still not implemented.  
+
+[`Version 1.3 Sample Output`](ExampleOutputs/ExampleOutput-V1.3)  
+
 
 
 
