@@ -1,3 +1,4 @@
+```
 Version 1.1: Added Castling!
 
 This output shows the game after several moves to show the new feature, Castling.
@@ -43,3 +44,4 @@ p p . . . p p p
 . . . B . N . . 
 P P P P . P P P 
 R N B Q . R K . 
+```
