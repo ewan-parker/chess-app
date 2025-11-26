@@ -89,6 +89,7 @@ public class ChessGame {
 			int row = (isWhite ? 7 : 0);
 			
 			
+			
 			// King-Side Castling
 			if (to.getCol() == 6) {
 
@@ -144,6 +145,8 @@ public class ChessGame {
 		
 		List<Position> castlingOptions = new ArrayList<>();
 		
+		boolean pathSafe;
+		
 		Piece king = board.getPieceAt(from);
 		if (king == null || king.getType() != PieceType.KING) return castlingOptions;
 		
@@ -174,37 +177,46 @@ public class ChessGame {
 		
 		//White's Castles
 		
-		if ( isWhite && leftRook != null && !whiteRooksMoved[0] && board.isEmpty(b) && board.isEmpty(c) && board.isEmpty(d) ) { //Queen Side
+		if (isWhite && leftRook != null && leftRook.getType() == PieceType.ROOK && leftRook.getColour() == PieceColour.WHITE && !whiteRooksMoved[0] && board.isEmpty(b) && board.isEmpty(c) && board.isEmpty(d)) { //Queen Side
 			
-			Position whiteQueenSideCastle = c;
+			pathSafe = !(board.squareAttacked(d, PieceColour.BLACK) || board.squareAttacked(c, PieceColour.BLACK) || board.squareAttacked(b, PieceColour.BLACK));
+
+			if (pathSafe) {
+				castlingOptions.add(c); // Queen-side castle was allowed
+			}
 			
-			castlingOptions.add(whiteQueenSideCastle);
+			
 		}
 			
-		if ( isWhite && rightRook != null && !whiteRooksMoved[1] && board.isEmpty(f) && board.isEmpty(g) ) { //King Side
+		if (isWhite && rightRook != null && rightRook.getType() == PieceType.ROOK && rightRook.getColour() == PieceColour.WHITE && !whiteRooksMoved[1] && board.isEmpty(f) && board.isEmpty(g)) { //King Side
 			
-			Position whiteKingSideCastle = g;
-			
-			castlingOptions.add(whiteKingSideCastle);
+			pathSafe = !(board.squareAttacked(f, PieceColour.BLACK) || board.squareAttacked(g, PieceColour.BLACK));
+
+			if (pathSafe) 
+				castlingOptions.add(g); // King-side castle was allowed
 		}
 		
 	
 		
 		//Black's Castles
 		
-		if ( !isWhite && leftRook != null && !blackRooksMoved[0] && board.isEmpty(b) && board.isEmpty(c) && board.isEmpty(d)) { //Queen Side
+		if (!isWhite && leftRook != null && leftRook.getType() == PieceType.ROOK && leftRook.getColour() == PieceColour.BLACK && !blackRooksMoved[0] && board.isEmpty(b) && board.isEmpty(c) && board.isEmpty(d)) { //Queen Side
 			
-			Position blackQueenSideCastle = c;
+			pathSafe = !(board.squareAttacked(d, PieceColour.WHITE) || board.squareAttacked(c, PieceColour.WHITE) || board.squareAttacked(b, PieceColour.WHITE));
+
+			if (pathSafe) 
+				castlingOptions.add(c); // Queen-side castle was allowed
 			
-			castlingOptions.add(blackQueenSideCastle);
 		
 		}
 		
-		if ( !isWhite && rightRook != null && !blackRooksMoved[1] && board.isEmpty(f) && board.isEmpty(g) ) { //King Side
+		if (!isWhite && rightRook != null && rightRook.getType() == PieceType.ROOK && rightRook.getColour() == PieceColour.BLACK && !blackRooksMoved[1] && board.isEmpty(f) && board.isEmpty(g)) { //King Side
 			
-			Position blackKingSideCastle = g;
+			pathSafe = !(board.squareAttacked(f, PieceColour.WHITE) || board.squareAttacked(g, PieceColour.WHITE));
+
+			if (pathSafe) 
+				castlingOptions.add(g); // King-side castle was allowed
 			
-			castlingOptions.add(blackKingSideCastle);
 		}
 		
 			
@@ -222,12 +234,45 @@ public class ChessGame {
 	//Checks for various states of a game
 	
 	
-	
-	
 	public boolean isInCheck(PieceColour colour) {
 		
+		board = getBoard();
+		Position kingFound = null;
 		
-		return false; //TODO
+		
+		
+		//Find the King of desired colour.
+		boolean found = false;
+		
+		for (int i = 0; i < 8; i++ ) {
+			
+			if (found == false) {
+				
+				for (int k = 0; k < 8; k++) {
+
+					Position pos = new Position(i,k);
+						
+					if (board.getPieceAt(pos) != null) {
+						if (board.getPieceAt(pos).getType() == PieceType.KING && board.getPieceAt(pos).getColour() == colour) {
+								kingFound = pos;
+								found = true;
+								break;
+						}
+					}
+				}
+			}
+		}
+		
+		if (kingFound == null) throw new IllegalStateException("King not found!");
+		
+		
+		// Detect Checks:
+		PieceColour opponentColour;
+		
+		opponentColour = (colour == PieceColour.WHITE) ? PieceColour.BLACK : PieceColour.WHITE;
+		
+		return (board.squareAttacked(kingFound, opponentColour));
+			
 	}
 	
 	public boolean isCheckMate(PieceColour colour) {

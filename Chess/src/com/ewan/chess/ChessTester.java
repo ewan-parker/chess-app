@@ -15,22 +15,28 @@ public class ChessTester {
 		board.printBoard();
 		
 		while (true) {
+			
+			if (game.isInCheck(game.getCurrentTurn())) {
+				System.out.println(" ");
+				System.out.println("Check!");
+			}
+				
+				
+				
+			//Recieve and Convert Player input
 			System.out.print("\nPlayer: " + game.getCurrentTurn() + ". Make a Move (eg: g1 f3): ");
     
 			String stringFrom = sc.next();
 			String stringTo = sc.next();
     
+			System.out.println();
 			
 			Position from = Position.fromString(stringFrom);
 			Position to = Position.fromString(stringTo);
 			
-    
-			System.out.println();
-			System.out.println("From row: " + from.getRow() + " col: " + from.getCol());
-			Piece piece = board.getPieceAt(from);
-			System.out.println("Piece at from: " + piece);
-			System.out.println();
-    
+			
+			
+			//Make the move
 			boolean moveSuccess = game.makeMove(from, to);
     
 			if (!moveSuccess) {

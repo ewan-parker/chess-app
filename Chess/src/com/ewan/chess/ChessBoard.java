@@ -61,8 +61,30 @@ public class ChessBoard {
 			return false;
 	}
 	
+	public boolean squareAttacked(Position target, PieceColour colour) { //Use the opponents colour.
+		
+		
+		for (int i = 0; i < 8; i++ ) {
+			for (int k = 0; k < 8; k++ ) {
+				
+				Position pos = new Position (i,k);
+				
+				Piece piece = getPieceAt(pos);
+				
+				if (piece != null && piece.getColour() == colour && getBasicLegalMoves(pos).contains(target)) {
+					return true;
+				}
+				
+			}
+		}
+		
+		return false;
+		
+		
+	}
 	
-	public List<Position> getLegalMoves(Position from) {
+	
+	public List<Position> getBasicLegalMoves(Position from) {
 		List<Position> moves = new ArrayList<>();
 		Piece piece = squares[from.getRow()][from.getCol()];
 		
@@ -169,13 +191,15 @@ public class ChessBoard {
 			}
 			case KING: { //Castling moves belong to the king, not the rook.
 				
+				
+				
 				int row = from.getRow();
 				int col = from.getCol();
 				
 				int[][] kingDirections = { {1,0}, {-1,0}, {0,1}, {0,-1}, {1,1}, {1,-1}, {-1,1}, {-1,-1} }; // directions[pair][location]
 				
 				slidingMoves(kingDirections, piece, moves, row, col, 1);
-		
+				
 				break;
 			}
 			
@@ -184,7 +208,7 @@ public class ChessBoard {
 		return moves;
 	}
 	
-	//Helper methods for getLegalMoves():
+	//Helper methods for getBasicLegalMoves():
 	private boolean isInBounds(Position pos) {
 	    int r = pos.getRow();
 	    int c = pos.getCol();
@@ -215,6 +239,25 @@ public class ChessBoard {
 			}	
 		}
 	}
+	
+	public List<Position> getLegalMoves(Position from) {
+		Piece piece = getPieceAt(from);
+		if (piece == null) return new ArrayList<>();
+    
+		List<Position> moves = getBasicLegalMoves(from);
+
+		if (piece.getType() == PieceType.KING) {
+			PieceColour opponentColour = (piece.getColour() == PieceColour.WHITE) ? PieceColour.BLACK : PieceColour.WHITE;
+			moves.removeIf(pos -> squareAttacked(pos, opponentColour));
+		}	
+
+		return moves;
+	}
+	
+	
+	
+	
+	
 	
 	//Board Printing for console play:
 	public void printBoard() {
