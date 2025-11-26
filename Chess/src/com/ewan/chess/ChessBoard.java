@@ -14,12 +14,20 @@ public class ChessBoard {
         return capturedPieces;
     }
 	
+	private MoveRecord moveHistory;
+	
 	
 	
 	
 	// Constructor:
-	public ChessBoard() {
-		
+	public ChessBoard(MoveRecord history) {
+		this.moveHistory = history;
+		setupBoard();
+	}
+	
+	
+	//Places the pieces on the board
+	private void setupBoard() {
 		//Place the pawns with a loop.
 		for (int c = 0; c < 8; c++) {	
 			squares[6][c] = new Piece(PieceType.PAWN, PieceColour.WHITE);
@@ -84,6 +92,7 @@ public class ChessBoard {
 	}
 	
 	
+	// Generate moves that the piece is generally allowed to move to. Does not account for Check
 	public List<Position> getBasicLegalMoves(Position from) {
 		List<Position> moves = new ArrayList<>();
 		Piece piece = squares[from.getRow()][from.getCol()];
@@ -209,6 +218,7 @@ public class ChessBoard {
 	}
 	
 	//Helper methods for getBasicLegalMoves():
+	
 	private boolean isInBounds(Position pos) {
 	    int r = pos.getRow();
 	    int c = pos.getCol();
@@ -240,23 +250,75 @@ public class ChessBoard {
 		}
 	}
 	
+	
+	//The final validity checker of each players moves.
+	
 	public List<Position> getLegalMoves(Position from) {
 		Piece piece = getPieceAt(from);
 		if (piece == null) return new ArrayList<>();
+		
+		//Determine current players colour:
+		PieceColour playerColour = piece.getColour();
+		PieceColour opponentColour = (playerColour == PieceColour.WHITE) ? PieceColour.BLACK : PieceColour.WHITE;
     
+		
+		//Source the moves that the piece can generally make.
 		List<Position> moves = getBasicLegalMoves(from);
 
-		if (piece.getType() == PieceType.KING) {
-			PieceColour opponentColour = (piece.getColour() == PieceColour.WHITE) ? PieceColour.BLACK : PieceColour.WHITE;
-			moves.removeIf(pos -> squareAttacked(pos, opponentColour));
-		}	
-
-		return moves;
+		
+		//Filter for leaving the king in a safe square
+		List<Position> safeMoves = new ArrayList<>();
+		
+		Position kingPos = findKing(playerColour);
+		
+		for (Position to : moves) {
+			
+			Piece movingPiece = squares[from.getRow()][from.getCol()];
+			Piece capturedPiece = squares[to.getRow()][to.getCol()];
+	    
+			//Temporarily move the piece
+			squares[to.getRow()][to.getCol()] = movingPiece;
+			squares[from.getRow()][from.getCol()] = null;
+			
+			
+			Position tempKingPos = (movingPiece.getType() == PieceType.KING) ? to : kingPos;
+			
+			
+			
+			//check if the king is safe
+			if (!squareAttacked(tempKingPos, opponentColour))
+				safeMoves.add(to);
+			
+			//Undo the temporary move
+			squares[to.getRow()][to.getCol()] = capturedPiece;
+			squares[from.getRow()][from.getCol()] = movingPiece;
+			
+		}
+	
+		return safeMoves;
 	}
 	
+	//getLegalMoves Helper 
 	
-	
-	
+	public Position findKing(PieceColour colour) { //Find the King of desired colour.
+		boolean found = false;
+		
+		for (int i = 0; i < 8; i++ ) {
+			
+			if (found == false) {
+				
+				for (int k = 0; k < 8; k++) {
+
+					Position pos = new Position(i,k);
+						
+					if (getPieceAt(pos) != null && getPieceAt(pos).getType() == PieceType.KING && getPieceAt(pos).getColour() == colour)
+						return pos;
+				}
+			}
+		}
+		
+		throw new IllegalStateException("King not found!");
+	}
 	
 	
 	//Board Printing for console play:
@@ -274,11 +336,14 @@ public class ChessBoard {
 	    }
 	}
 	
-	
-	//Mutators
+	//Once allowed, move the piece.
 	public void movePiece(Position from, Position to) {
 	    Piece movingPiece = squares[from.getRow()][from.getCol()];
 	    Piece capturedPiece = squares[to.getRow()][to.getCol()];
+	    
+	    // Save move to history
+	    MoveRecord.SingleMove move = new MoveRecord.SingleMove(from, to, movingPiece, capturedPiece, movingPiece.getColour());
+	    moveHistory.addMove(move);
 	
 	    
 	    // Move the piece
@@ -291,6 +356,19 @@ public class ChessBoard {
 	    }
 	    
 	}
+	
+	
+	
+	
+	public void undoMove() {
+		//TODO
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

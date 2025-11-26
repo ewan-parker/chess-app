@@ -21,6 +21,7 @@ public class ChessGame {
 	private Position enPassantTarget; // square that can be captured with en-passant
 	
 	
+	private MoveRecord moveHistory;
 	
 	
 	// Constructor
@@ -28,9 +29,13 @@ public class ChessGame {
 		
 		state = GameState.ACTIVE;
 		
-		board = new ChessBoard();
+		moveHistory = new MoveRecord();
+		
+		board = new ChessBoard(moveHistory);
 		
 		currentTurn = PieceColour.WHITE;
+		
+		moveHistory = new MoveRecord();
 		
 		whiteKingMoved = false;
 		blackKingMoved = false;
@@ -140,6 +145,15 @@ public class ChessGame {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private List<Position> getCastlingOptions(Position from) {
 		
 		
@@ -179,7 +193,7 @@ public class ChessGame {
 		
 		if (isWhite && leftRook != null && leftRook.getType() == PieceType.ROOK && leftRook.getColour() == PieceColour.WHITE && !whiteRooksMoved[0] && board.isEmpty(b) && board.isEmpty(c) && board.isEmpty(d)) { //Queen Side
 			
-			pathSafe = !(board.squareAttacked(d, PieceColour.BLACK) || board.squareAttacked(c, PieceColour.BLACK) || board.squareAttacked(b, PieceColour.BLACK));
+			pathSafe = !( board.squareAttacked(from, PieceColour.BLACK) || board.squareAttacked(d, PieceColour.BLACK) || board.squareAttacked(c, PieceColour.BLACK) );
 
 			if (pathSafe) {
 				castlingOptions.add(c); // Queen-side castle was allowed
@@ -190,7 +204,7 @@ public class ChessGame {
 			
 		if (isWhite && rightRook != null && rightRook.getType() == PieceType.ROOK && rightRook.getColour() == PieceColour.WHITE && !whiteRooksMoved[1] && board.isEmpty(f) && board.isEmpty(g)) { //King Side
 			
-			pathSafe = !(board.squareAttacked(f, PieceColour.BLACK) || board.squareAttacked(g, PieceColour.BLACK));
+			pathSafe = !( board.squareAttacked(from, PieceColour.BLACK) || board.squareAttacked(f, PieceColour.BLACK) || board.squareAttacked(g, PieceColour.BLACK) );
 
 			if (pathSafe) 
 				castlingOptions.add(g); // King-side castle was allowed
@@ -202,7 +216,7 @@ public class ChessGame {
 		
 		if (!isWhite && leftRook != null && leftRook.getType() == PieceType.ROOK && leftRook.getColour() == PieceColour.BLACK && !blackRooksMoved[0] && board.isEmpty(b) && board.isEmpty(c) && board.isEmpty(d)) { //Queen Side
 			
-			pathSafe = !(board.squareAttacked(d, PieceColour.WHITE) || board.squareAttacked(c, PieceColour.WHITE) || board.squareAttacked(b, PieceColour.WHITE));
+			pathSafe = !( board.squareAttacked(from, PieceColour.WHITE)|| board.squareAttacked(d, PieceColour.WHITE) || board.squareAttacked(c, PieceColour.WHITE) );
 
 			if (pathSafe) 
 				castlingOptions.add(c); // Queen-side castle was allowed
@@ -212,7 +226,7 @@ public class ChessGame {
 		
 		if (!isWhite && rightRook != null && rightRook.getType() == PieceType.ROOK && rightRook.getColour() == PieceColour.BLACK && !blackRooksMoved[1] && board.isEmpty(f) && board.isEmpty(g)) { //King Side
 			
-			pathSafe = !(board.squareAttacked(f, PieceColour.WHITE) || board.squareAttacked(g, PieceColour.WHITE));
+			pathSafe = !( board.squareAttacked(from, PieceColour.WHITE) || board.squareAttacked(f, PieceColour.WHITE) || board.squareAttacked(g, PieceColour.WHITE));
 
 			if (pathSafe) 
 				castlingOptions.add(g); // King-side castle was allowed
@@ -306,5 +320,9 @@ public class ChessGame {
     	return null;
     	}
     
+    
 }
+
+
+
   

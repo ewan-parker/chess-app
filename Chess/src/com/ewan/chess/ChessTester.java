@@ -25,6 +25,7 @@ public class ChessTester {
 				
 			//Recieve and Convert Player input
 			System.out.print("\nPlayer: " + game.getCurrentTurn() + ". Make a Move (eg: g1 f3): ");
+			
     
 			String stringFrom = sc.next();
 			String stringTo = sc.next();
@@ -45,11 +46,7 @@ public class ChessTester {
 			}
     
 			board.printBoard();
-		}
-		
-		
-		
-		
+		}	
 	}
 
 }
