@@ -1,17 +1,15 @@
-# Chess App ♟
-A Java-based chess program
+# Chess ♟
+A Java-based chess program.
 
 ## Progress
 Currently a console-based game 
 
-- [See Patch Notes for Latest Updates](PATCHNOTES.md)
+- Patch notes and version updates documented here: [Patch Notes](PATCHNOTES.md)
   
-- [An exposition of updated rules in version 1.3](ExampleOutputs/ExampleOutput-V1.3)
+- How the game currently looks: [Version 1.5 Sample Output](ExampleOutputs/ExampleOutput-V1.5.txt)
 
-## Tech Stack
-- Language: Java
-- UI: To be added later
+## Coming Soon
+- Draw by repetition
+- Draw by insufficient material
+- UI with React
 
----
-
-More updates coming soon.
