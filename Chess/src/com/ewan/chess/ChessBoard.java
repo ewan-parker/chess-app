@@ -16,7 +16,7 @@ public class ChessBoard {
 	
 	private MoveRecord moveHistory;
 	
-	
+	private MoveRecord.SingleMove lastMove;
 	
 	
 	// Constructor:
@@ -254,6 +254,7 @@ public class ChessBoard {
 	//The final validity checker of each players moves.
 	
 	public List<Position> getLegalMoves(Position from) {
+
 		Piece piece = getPieceAt(from);
 		if (piece == null) return new ArrayList<>();
 		
@@ -264,24 +265,35 @@ public class ChessBoard {
 		
 		//Source the moves that the piece can generally make.
 		List<Position> moves = getBasicLegalMoves(from);
-
 		
-		//Filter for leaving the king in a safe square
+		
+		//Gives the pawn a en Passant square to move to if valid.
+		if (lastMove != null && piece.getType() == PieceType.PAWN && from.getRow() == lastMove.to.getRow() && lastMove.movedPiece.getType() == PieceType.PAWN && Math.abs(lastMove.from.getRow() - lastMove.to.getRow()) == 2) {
+	    
+			int enPassantRow = (piece.getColour() == PieceColour.WHITE) ? lastMove.to.getRow() - 1 : lastMove.to.getRow() + 1;
+			int enPassantCol = lastMove.to.getCol();
+				
+			Position enPassantTarget = new Position(enPassantRow, enPassantCol);
+			moves.add(enPassantTarget);
+		}
+		
+	
+		//Filters for leaving the king in a safe square
 		List<Position> safeMoves = new ArrayList<>();
-		
-		Position kingPos = findKing(playerColour);
 		
 		for (Position to : moves) {
 			
 			Piece movingPiece = squares[from.getRow()][from.getCol()];
 			Piece capturedPiece = squares[to.getRow()][to.getCol()];
+			
+			boolean isEnPassant = (piece.getType() == PieceType.PAWN && lastMove != null && to.getCol() == lastMove.to.getCol());
 	    
 			//Temporarily move the piece
 			squares[to.getRow()][to.getCol()] = movingPiece;
 			squares[from.getRow()][from.getCol()] = null;
 			
 			
-			Position tempKingPos = (movingPiece.getType() == PieceType.KING) ? to : kingPos;
+			Position tempKingPos = (movingPiece.getType() == PieceType.KING) ? to : findKing(playerColour);
 			
 			
 			
@@ -324,6 +336,7 @@ public class ChessBoard {
 	//Board Printing for console play:
 	public void printBoard() {
 	    for (int r = 0; r < 8; r++) {
+	    	
 	        for (int c = 0; c < 8; c++) {
 	            Piece p = squares[r][c];
 	            if (p != null) {
@@ -331,15 +344,49 @@ public class ChessBoard {
 	            } else {
 	                System.out.print(". "); // empty square
 	            }
+	            
+	            if (r == 2 && c == 7) {
+		    		System.out.print("    ");
+		    		printGraveyard();
+	            }
 	        }
 	        System.out.println();
 	    }
+	}
+	
+	private void printGraveyard() {
+		
+		List<Piece> captured = getCapturedPieces(); 
+		
+		if (captured.isEmpty()) {
+			System.out.print("Graveyard: ");
+			return;
+		}
+		
+		System.out.print("Graveyard: ");
+		
+		for (Piece p : captured) {
+			System.out.print(p + " ");
+		}
+		
 	}
 	
 	//Once allowed, move the piece.
 	public void movePiece(Position from, Position to) {
 	    Piece movingPiece = squares[from.getRow()][from.getCol()];
 	    Piece capturedPiece = squares[to.getRow()][to.getCol()];
+	    
+	    
+	    //Change capturedPiece to a en Passant capture if needed.
+	    
+	    if (movingPiece.getType() == PieceType.PAWN && lastMove != null && to.getCol() == lastMove.to.getCol() 
+	    	&& (Math.abs(from.getCol() - to.getCol()) == 1) && to.getRow() == ((movingPiece.getColour() == PieceColour.WHITE) ? lastMove.to.getRow() - 1 : lastMove.to.getRow() + 1)) {
+	    		
+	    		capturedPiece = squares[lastMove.to.getRow()][lastMove.to.getCol()];
+	    		squares[lastMove.to.getRow()][lastMove.to.getCol()] = null;
+	    	}
+	    
+	    
 	    
 	    // Save move to history
 	    MoveRecord.SingleMove move = new MoveRecord.SingleMove(from, to, movingPiece, capturedPiece, movingPiece.getColour());
@@ -349,10 +396,16 @@ public class ChessBoard {
 	    // Move the piece
 	    squares[to.getRow()][to.getCol()] = movingPiece;
 	    squares[from.getRow()][from.getCol()] = null;
+	    
+	    
+	    lastMove = move;
 
 	    //Add capturedPiece to capturedPieces list.
 	    if (capturedPiece != null) {
 	    	capturedPieces.add(capturedPiece);
+	    	
+	    	
+	    
 	    }
 	    
 	}
@@ -363,13 +416,5 @@ public class ChessBoard {
 	public void undoMove() {
 		//TODO
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

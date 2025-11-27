@@ -18,7 +18,7 @@ public class ChessGame {
     private boolean[] blackRooksMoved; // [queenSide, kingSide]
 	
 	
-	private Position enPassantTarget; // square that can be captured with en-passant
+	private Position enPassantTarget;
 	
 	
 	private MoveRecord moveHistory;
