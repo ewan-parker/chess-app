@@ -80,7 +80,7 @@
 - En passant is a pawn specific move that allows the capture of a rank adjacent enemy pawn that has made a 2 square advance on the last turn
 
 ### Added **Graveyard**
-- We should remember that our pieces went out to battle for us, I've added a graveyard of pieces to commemorate taken pieces.
+- Taken pieces appear on the side of the board
 
 [`Version 1.5 Sample Output`](ExampleOutputs/ExampleOutput-V1.5.txt)
 
